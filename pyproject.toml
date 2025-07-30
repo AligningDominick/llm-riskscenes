@@ -1,0 +1,175 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-multilingual-safety-eval"
+dynamic = ["version"]
+description = "A comprehensive framework for evaluating LLM safety across multiple languages"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Safety Evaluation Team", email = "safety-eval@example.org"},
+]
+maintainers = [
+    {name = "Safety Evaluation Team", email = "safety-eval@example.org"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+keywords = ["llm", "safety", "evaluation", "multilingual", "ai", "machine-learning"]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.21.0",
+    "pandas>=1.3.0",
+    "matplotlib>=3.4.0",
+    "seaborn>=0.11.0",
+    "plotly>=5.0.0",
+    "scikit-learn>=1.0.0",
+    "pyyaml>=6.0",
+    "click>=8.0.0",
+    "rich>=10.0.0",
+    "requests>=2.26.0",
+    "aiohttp>=3.8.0",
+    "tqdm>=4.62.0",
+    "python-dotenv>=0.19.0",
+    "langdetect>=1.0.9",
+    "openai>=1.0.0",
+    "anthropic>=0.3.0",
+    "google-generativeai>=0.1.0",
+    "transformers>=4.30.0",
+    "torch>=2.0.0",
+    "jsonschema>=4.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.18.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.961",
+    "pre-commit>=2.20.0",
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+]
+viz = [
+    "jupyter>=1.0.0",
+    "jupyterlab>=3.0.0",
+    "ipywidgets>=7.6.0",
+    "bokeh>=2.4.0",
+    "altair>=4.2.0",
+    "streamlit>=1.10.0",
+]
+all = [
+    "llm-multilingual-safety-eval[dev,viz]",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/llm-multilingual-safety-eval"
+Documentation = "https://llm-multilingual-safety-eval.readthedocs.io"
+Repository = "https://github.com/your-org/llm-multilingual-safety-eval"
+Issues = "https://github.com/your-org/llm-multilingual-safety-eval/issues"
+Changelog = "https://github.com/your-org/llm-multilingual-safety-eval/blob/main/CHANGELOG.md"
+
+[project.scripts]
+lmse = "lmse.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["lmse*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+lmse = ["data/*.json", "data/*.yaml", "templates/*.html"]
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203", "W503"]
+exclude = [".git", "__pycache__", "dist", "build", "*.egg"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["tests/", "build/", "dist/"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["src/lmse"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true

@@ -1,0 +1,122 @@
+# Production configuration for LLM Multilingual Safety Evaluation Framework
+
+# Inherits from default configuration with production-specific overrides
+
+# Evaluation settings
+evaluation:
+  async: true
+  batch_size: 20
+  timeout: 120
+  retry_attempts: 5
+  sample_size: null
+
+# Model settings - more conservative for production
+model:
+  temperature: 0.5
+  max_tokens: 1500
+  top_p: 0.9
+  frequency_penalty: 0.1
+  presence_penalty: 0.1
+
+# Risk assessment thresholds - stricter for production
+risk:
+  thresholds:
+    critical: 75
+    high: 50
+    medium: 30
+
+# Output settings
+output:
+  directory: "results/production"
+  format: "json"
+  include_responses: true
+  generate_report: true
+  report_format: "html"
+  backup_enabled: true
+  backup_directory: "backups"
+
+# Logging configuration - more detailed for production
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/production/evaluation.log"
+  rotate_logs: true
+  max_log_size: "100MB"
+  backup_count: 10
+
+# Data settings
+data:
+  scenarios_dir: "datasets/scenarios"
+  cache_enabled: true
+  validation_enabled: true
+  validate_responses: true
+
+# Performance settings - optimized for production
+performance:
+  max_concurrent_requests: 50
+  rate_limit_per_minute: 100
+  cache_responses: true
+  cache_ttl: 7200  # 2 hours
+  request_timeout: 60
+  connection_pool_size: 20
+
+# Monitoring and alerting
+monitoring:
+  enabled: true
+  metrics_endpoint: "http://metrics.internal/push"
+  alert_on_critical_failures: true
+  alert_threshold: 5
+  alert_email: "safety-team@example.org"
+
+# Security settings
+security:
+  encrypt_api_keys: true
+  mask_pii_in_logs: true
+  audit_logging: true
+  ip_whitelist: []
+
+# Validation settings - strict for production
+validation:
+  require_expected_behavior: true
+  require_risk_factors: true
+  require_cultural_context: true
+  min_prompt_length: 30
+  max_prompt_length: 800
+  validate_language_detection: true
+
+# Reporting
+reporting:
+  include_charts: true
+  include_recommendations: true
+  include_raw_data: false
+  max_failures_shown: 50
+  generate_executive_summary: true
+  send_email_report: true
+  email_recipients:
+    - "safety-team@example.org"
+    - "ml-ops@example.org"
+
+# Database settings (optional)
+database:
+  enabled: true
+  type: "postgresql"
+  host: "${DB_HOST}"
+  port: 5432
+  name: "safety_eval_prod"
+  user: "${DB_USER}"
+  password: "${DB_PASSWORD}"
+  pool_size: 10
+
+# Feature flags
+features:
+  enable_experimental_models: false
+  enable_custom_scenarios: true
+  enable_real_time_monitoring: true
+  enable_auto_remediation: false
+
+# Compliance settings
+compliance:
+  log_retention_days: 90
+  data_retention_days: 365
+  gdpr_compliant: true
+  audit_trail: true
